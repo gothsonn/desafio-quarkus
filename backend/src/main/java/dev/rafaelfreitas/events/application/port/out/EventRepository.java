@@ -1,9 +1,8 @@
 package dev.rafaelfreitas.events.application.port.out;
 
-import dev.rafaelfreitas.events.domain.Event;
 import dev.rafaelfreitas.events.infrastructure.adapter.EventEntity;
-import dev.rafaelfreitas.events.infrastructure.adapter.InstitutionEntity;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface EventRepository {
@@ -12,5 +11,6 @@ public interface EventRepository {
     EventEntity findEventById(Integer id);
     void deleteEvent(Integer id);
     EventEntity createEvent(EventEntity event);
-    EventEntity updateEvent(EventEntity event);
+    void activateEntities(LocalDate dateNow);
+    void deactivateEntities(LocalDate dateNow);
 }

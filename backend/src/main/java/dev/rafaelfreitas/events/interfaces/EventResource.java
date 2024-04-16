@@ -29,6 +29,7 @@ public class EventResource {
     @POST
     @APIResponse(responseCode = "201", description = "Event Created", content = @Content(mediaType = "application/json"))
     public Response createEvent(@NotNull @Valid Event event) {
+        event.validate();
         eventService.createEvent(event);
         return Response.status(Response.Status.CREATED).build();
     }

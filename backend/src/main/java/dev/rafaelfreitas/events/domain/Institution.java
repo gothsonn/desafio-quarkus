@@ -3,7 +3,7 @@ package dev.rafaelfreitas.events.domain;
 public class Institution {
     private Integer id;
     private String name;
-    private String type;
+    private InstitutionType type;
 
     public Integer getId() {
         return id;
@@ -21,11 +21,18 @@ public class Institution {
         this.name = name;
     }
 
-    public String getType() {
+    public InstitutionType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(InstitutionType type) {
         this.type = type;
+        validateType();
+    }
+
+    private void validateType() {
+        if(type == null) {
+            throw new IllegalArgumentException("Invalid institution type.");
+        }
     }
 }

@@ -4,7 +4,6 @@ import dev.rafaelfreitas.events.application.port.in.EventService;
 import dev.rafaelfreitas.events.application.port.out.EventRepository;
 import dev.rafaelfreitas.events.domain.Event;
 
-import dev.rafaelfreitas.events.domain.Institution;
 import dev.rafaelfreitas.events.infrastructure.adapter.EventEntity;
 import dev.rafaelfreitas.events.infrastructure.adapter.InstitutionEntity;
 import dev.rafaelfreitas.events.infrastructure.utils.DateTimeUtil;
@@ -51,7 +50,8 @@ public class EventServiceImpl implements EventService {
     @Override
     @Transactional
     public void updateEvent(Event event) {
-        EventEntity updatedEntity = eventRepository.updateEvent(convertDomainToEntity(event));
+        event.validate();
+        EventEntity updatedEntity = eventRepository.createEvent(convertDomainToEntity(event));
         convertEntityToDomain(updatedEntity);
     }
 
@@ -61,12 +61,8 @@ public class EventServiceImpl implements EventService {
         event.setName(entity.getName());
         event.setStartDate(DateTimeUtil.toLocalDate(entity.getStartDate()));
         event.setEndDate(DateTimeUtil.toLocalDate(entity.getEndDate()));
-        event.setIsActive(entity.isActive());
-        Institution institution = new Institution();
-        institution.setId(entity.getInstitution().getId());
-        institution.setName(entity.getInstitution().getName());
-        institution.setType(entity.getInstitution().getType());
-        event.setInstitution(institution);
+        event.setActive(entity.isActive());
+        event.setInstitutionId(entity.getInstitution().getId());
         return event;
     }
 
@@ -78,9 +74,7 @@ public class EventServiceImpl implements EventService {
         entity.setEndDate(DateTimeUtil.toLocalDateTime(event.getEndDate()));
         entity.setActive(event.isActive());
         InstitutionEntity institutionEntity = new InstitutionEntity();
-        institutionEntity.setId(event.getInstitution().getId());
-        institutionEntity.setName(event.getInstitution().getName());
-        institutionEntity.setType(event.getInstitution().getType());
+        institutionEntity.setId(event.getInstitutionId());
         entity.setInstitution(institutionEntity);
         return entity;
     }

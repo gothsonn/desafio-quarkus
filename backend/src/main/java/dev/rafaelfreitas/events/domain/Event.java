@@ -9,7 +9,7 @@ public class Event {
     private LocalDate startDate;
     private LocalDate endDate;
     private boolean isActive;
-    private Institution institution;
+    private Integer institutionId;
 
     public Integer getId() {
         return id;
@@ -47,15 +47,31 @@ public class Event {
         return isActive;
     }
 
-    public void setIsActive(boolean active) {
+    public Integer getInstitutionId() {
+        return institutionId;
+    }
+
+    public void setInstitutionId(Integer institutionId) {
+        this.institutionId = institutionId;
+    }
+
+    public void setActive(boolean active) {
         isActive = active;
     }
 
-    public Institution getInstitution() {
-        return institution;
+    public boolean isValid() {
+        if (startDate == null || endDate == null || institutionId == null) {
+            return false;
+        }
+        if ( (startDate.isBefore(LocalDate.now()) || startDate.isEqual(LocalDate.now())) && startDate.isAfter(endDate)) {
+            return false;
+        }
+        return !endDate.isBefore(startDate);
     }
 
-    public void setInstitution(Institution institution) {
-        this.institution = institution;
+    public void validate() throws IllegalArgumentException {
+        if (!isValid()) {
+            throw new IllegalArgumentException("Invalid event");
+        }
     }
 }

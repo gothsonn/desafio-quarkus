@@ -1,5 +1,6 @@
 package dev.rafaelfreitas.events.application.service;
 
+import dev.rafaelfreitas.events.domain.InstitutionType;
 import dev.rafaelfreitas.events.infrastructure.adapter.InstitutionEntity;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -10,24 +11,24 @@ import java.util.List;
 import dev.rafaelfreitas.events.application.port.out.InstitutionRepository;
 import dev.rafaelfreitas.events.domain.Institution;
 
-public class InstitutionServiceImplTest {
+class InstitutionServiceImplTest {
 
     Mockery context = new Mockery();
     InstitutionRepository institutionRepository = context.mock(InstitutionRepository.class);
 
     @Test
-    public void testListInstitutions() {
+    void testListInstitutions() {
         InstitutionServiceImpl service = new InstitutionServiceImpl(institutionRepository);
 
         Institution institution1 = new Institution();
         institution1.setId(1);
         institution1.setName("Institution 1");
-        institution1.setType("Type 1");
+        institution1.setType(InstitutionType.valueOf("COOPERATIVA"));
 
         Institution institution2 = new Institution();
         institution2.setId(2);
         institution2.setName("Institution 2");
-        institution2.setType("Type 2");
+        institution2.setType(InstitutionType.valueOf("SINGULAR"));
 
         List<Institution> institutions = Arrays.asList(institution1, institution2);
 
