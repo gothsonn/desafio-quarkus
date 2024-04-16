@@ -12,7 +12,6 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class EventServiceImpl implements EventService {
@@ -27,15 +26,14 @@ public class EventServiceImpl implements EventService {
     public List<Event> listEvents() {
         return eventRepository.listEvents().stream()
                 .map(this::convertEntityToDomain)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
     @Transactional
-    public Event createEvent(Event event) {
+    public void createEvent(Event event) {
         EventEntity savedEntity = eventRepository.createEvent(convertDomainToEntity(event));
         event.setId(savedEntity.getId());
-        return event;
     }
 
     @Override
@@ -52,9 +50,9 @@ public class EventServiceImpl implements EventService {
 
     @Override
     @Transactional
-    public Event updateEvent(Event event) {
+    public void updateEvent(Event event) {
         EventEntity updatedEntity = eventRepository.updateEvent(convertDomainToEntity(event));
-        return convertEntityToDomain(updatedEntity);
+        convertEntityToDomain(updatedEntity);
     }
 
     private Event convertEntityToDomain(EventEntity entity) {
